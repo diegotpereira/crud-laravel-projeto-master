@@ -12,12 +12,12 @@ class ContatoController extends Controller
     {
         $data = Contato::orderBy('id', 'desc')->paginate(10)->setPath('contatos');
 
-        return view('admin.contatos.index', compact(['data']));
+        return view('contatos.index', compact(['data']));
     }
     // função criar
     public function create()
     {
-        return view('admin.contatos.create');
+        return view('contatos.create');
     }
     // armazenar dados
     public function store(Request $request)
@@ -30,38 +30,38 @@ class ContatoController extends Controller
 
         Contato::create($request->all());
 
-        return redirect()->back()->with('sucesso', 'Contato criado com sucesso!.');
+        return redirect('/contatos')->with('sucesso', 'Contato criado com sucesso!.');
     }
     // visualizar contatos
     public function show($id)
     {
         $data = Contato::find($id);
 
-        return view('admin,contatos.show', compact(['data']));
+        return view('contatos.show', compact(['data']));
     }
     // metodo editar
     public function edit($id)
     {
         $data = Contato::find($id);
 
-        return view('admin.contatos.edit', compact(['data']));
+        return view('contatos.edit', compact(['data']));
     }
     // metodo alterar
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $data = $request->validate([
             'nome' => 'required',
             'email' => 'required|email',
             'telefone' => 'required'
         ]);
-        Contato::where('id', $id)->update($request->all());
+        Contato::where('id', $id)->update($data);
 
-        return redirect()->back()->with('sucesso', 'Contato alterado com sucesso!.');
+        return redirect('/contatos')->with('sucesso', 'Contato alterado com sucesso!.');
     }
     public function destroy($id)
     {
         Contato::where('id', $id)->delete();
 
-        return redirect()->back()->with('sucesso', 'Contato delete com sucesso!.');
+        return redirect('/contatos')->with('sucesso', 'Contato delete com sucesso!.');
     }
 }
